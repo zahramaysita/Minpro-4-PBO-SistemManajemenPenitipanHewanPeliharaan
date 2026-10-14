@@ -50,18 +50,17 @@ Pada proses penambahan data, pengguna memasukkan data yang diperlukan, kemudian 
 Setelah proses selesai, hasilnya akan ditampilkan melalui class HewanView. Pengguna kemudian dapat kembali ke menu utama untuk memilih fitur lainnya. Proses ini berlangsung berulang kali sampai pengguna memilih menu Keluar. Setelah pilihan tersebut dipilih, program mengakhiri perulangan menu, menampilkan pesan penutup, dan menutup objek Scanner yang digunakan untuk menerima input pengguna.
 
 
-
 ## 1.5 Penjelasan Struktur Package
 
 Program menggunakan beberapa package untuk mengelompokkan class berdasarkan fungsinya agar struktur program lebih rapi dan mudah dikelola.
 
 Main
 
-Berisi class SistemPenitipanHewanPeliharaan yang digunakan sebagai class utama untuk menjalankan program.
+Berisi class SistemPenitipanHewanPeliharaan yang digunakan sebagai class utama untuk menjalankan program dan memuat objek yang dibutuhkan.
 
 Model
 
-Berisi class Hewan, Kucing, Anjing, Kelinci, Hamster, Penitipan, dan Service yang digunakan untuk mengelola data dan objek dalam program.
+Berisi class Hewan, Kucing, Anjing, Kelinci, Hamster, Penitipan, dan Service yang digunakan untuk mengelola data dan objek dalam program. Class Hewan menjadi superclass bagi class jenis hewan lainnya.
 
 View
 
@@ -69,13 +68,27 @@ Berisi class HewanView yang hanya bertugas menampilkan menu, input, dan output k
 
 Controller
 
-Berisi class HewanController yang bertugas menerima input pengguna dan menjalankan logic program, termasuk proses CRUD data hewan dan data penitipan.
+Berisi class HewanController yang bertugas menerima dan memproses pilihan pengguna, menjalankan logika program, serta mengatur proses CRUD data hewan dan data penitipan dengan memanggil class DAO yang sesuai.
 
 Interfaces
 
-Berisi interface InfoHewan yang digunakan sebagai penerapan nilai tambah berupa interface.
+Berisi interface InfoHewan yang mendefinisikan method getInfo() untuk diterapkan pada class yang mengimplementasikannya.
 
-<img width="440" height="410" alt="image" src="https://github.com/user-attachments/assets/261c5e6c-aeb6-4b98-97fc-16c0487b7830" />
+Config 
+
+Berisi class Koneksi yang digunakan untuk menghubungkan program Java dengan database MySQL menggunakan JDBC.
+
+Model.dao
+
+Berisi class HewanDAO dan PenitipanDAO yang bertugas mengelola data hewan dan data penitipan pada database, seperti menambah, menampilkan, mengubah, dan menghapus data. Class DAO menggunakan JDBC dan PreparedStatement untuk menjalankan perintah SQL.
+
+File Database (db_penitipan_hewan.sql)
+
+Merupakan file SQL yang berisi perintah untuk membuat database db_penitipan_hewan, membuat tabel hewan dan penitipan, serta memasukkan data awal (dummy data). File ini digunakan untuk menyiapkan database agar dapat digunakan oleh program.
+
+
+<img width="412" height="702" alt="image" src="https://github.com/user-attachments/assets/0a67c98e-9bfa-4341-97ac-7b61e7f5ff0b" />
+
 
 
 # BAB II 
