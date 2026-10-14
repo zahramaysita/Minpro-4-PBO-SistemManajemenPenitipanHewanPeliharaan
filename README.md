@@ -134,7 +134,7 @@ dummy data penitipan
 
 
 
-Gambar di atas menampilkan data hewan yang tersimpan di dalam database MySQL. Data yang ditampilkan merupakan dummy data yang telah ditambahkan sebelumnya ke dalam database melalui file db_penitipan_hewan.sql. Dengan adanya dummy data tersebut, fitur tampilkan data hewan dapat langsung menampilkan data tanpa pengguna harus memasukkan data terlebih dahulu. Informasi yang ditampilkan meliputi ID hewan, nama hewan, jenis hewan, dan ras. Selain menampilkan dummy data, menu ini juga dapat menampilkan data hewan baru yang berhasil ditambahkan oleh pengguna melalui menu tambah data hewan. Proses pengambilan data dilakukan menggunakan JDBC melalui class HewanDAO dengan menjalankan perintah SQL untuk mengambil data dari database.
+Gambar di atas menampilkan data hewan yang tersimpan di dalam database MySQL. Data yang ditampilkan merupakan dummy data yang telah ditambahkan sebelumnya ke dalam database melalui file db_penitipan_hewan.sql. Selain dummy data hewan, terdapat juga dummy data penitipan yang digunakan sebagai data awal agar fitur read pada kedua tabel dapat langsung menampilkan data tanpa pengguna harus memasukkan data terlebih dahulu. Informasi yang ditampilkan pada data hewan meliputi ID hewan, nama hewan, jenis hewan, dan ras. Sementara itu, data penitipan meliputi ID penitipan, ID hewan, tanggal masuk, dan lama penitipan. Selain menampilkan dummy data, program juga dapat menampilkan data hewan dan data penitipan baru yang berhasil ditambahkan oleh pengguna melalui menu yang tersedia. Proses pengambilan data dilakukan menggunakan JDBC melalui class HewanDAO untuk data hewan dan PenitipanDAO untuk data penitipan dengan menjalankan perintah SQL untuk mengambil data dari database.
 
 
 ### 2.2.2 Tambah Data Hewan
