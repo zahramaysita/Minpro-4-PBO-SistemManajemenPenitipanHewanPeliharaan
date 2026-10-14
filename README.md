@@ -32,25 +32,14 @@ Tujuan dari pembuatan program Sistem Penitipan Hewan yaitu:
 4. Membantu menjaga data penitipan agar lebih teratur dan mudah dikelola.
 5. Mengurangi kesalahan dalam memasukkan data dengan adanya validasi input.
 
-## 1.3 Alur Singkat Program
+## 1.3 Alur Program
 
-Program dimulai dengan menampilkan menu utama yang berisi pilihan untuk mengelola data hewan dan data penitipan. Pengguna dapat memilih fitur untuk menambah, menampilkan, mengubah, menghapus, dan mencari data sesuai kebutuhan. Program menggunakan JDBC untuk menghubungkan Java dengan database MySQL sehingga data dapat disimpan dan diakses kembali. Setelah proses selesai, program akan kembali menampilkan menu utama sampai pengguna memilih menu Keluar untuk mengakhiri program.
+Saat program dijalankan, sistem akan menampilkan menu utama yang berisi berbagai pilihan fitur. Pengguna dapat memilih menu sesuai kebutuhan, seperti mengelola data hewan maupun data penitipan hewan. Pada pengelolaan data hewan, pengguna dapat menambahkan, menampilkan, mengubah, menghapus, dan mencari data hewan yang tersimpan di database. Selain itu, pengguna juga dapat mengelola data penitipan hewan dengan menambahkan, menampilkan, mengubah, dan menghapus data penitipan.
 
-
-## 1.4 Alur Program 
-
-Saat program dijalankan, class SistemPenitipanHewanPeliharaan akan membuat objek Scanner, HewanView, dan HewanController. Setelah itu, program menjalankan method jalankanProgram() pada class HewanController untuk memulai proses pengelolaan data. Program akan menampilkan menu utama melalui class HewanView, sehingga pengguna dapat memilih fitur yang tersedia sesuai kebutuhan.
-
-Menu utama menyediakan pilihan untuk mengelola data hewan dan data penitipan hewan. Pada menu hewan, pengguna dapat menambahkan, menampilkan, mengubah, menghapus, dan mencari data hewan. Sementara itu, pada menu penitipan, pengguna dapat menambahkan, menampilkan, mengubah, dan menghapus data penitipan. Setiap pilihan yang dimasukkan pengguna akan diproses oleh HewanController sesuai dengan fitur yang dipilih.
-
-Untuk pengelolaan data hewan, program menggunakan class HewanDAO, sedangkan pengelolaan data penitipan menggunakan class PenitipanDAO. Kedua class tersebut bertugas menjalankan proses pengambilan dan perubahan data pada database. Program menggunakan JDBC untuk menghubungkan Java dengan database MySQL melalui class Koneksi. Dengan adanya koneksi tersebut, data hewan dan data penitipan dapat disimpan di database dan diakses kembali saat dibutuhkan.
-
-Pada proses penambahan data, pengguna memasukkan data yang diperlukan, kemudian program memproses dan menyimpannya ke database. Pada proses menampilkan data, program mengambil data dari database dan menampilkannya kepada pengguna. Untuk mengubah dan menghapus data, pengguna memasukkan ID data yang ingin diproses. Sementara itu, pada fitur pencarian hewan, pengguna memasukkan ID hewan yang ingin dicari, kemudian program menampilkan informasi hewan yang sesuai apabila data ditemukan.
-
-Setelah proses selesai, hasilnya akan ditampilkan melalui class HewanView. Pengguna kemudian dapat kembali ke menu utama untuk memilih fitur lainnya. Proses ini berlangsung berulang kali sampai pengguna memilih menu Keluar. Setelah pilihan tersebut dipilih, program mengakhiri perulangan menu, menampilkan pesan penutup, dan menutup objek Scanner yang digunakan untuk menerima input pengguna.
+Setiap data yang ditambahkan, ditampilkan, diubah, atau dihapus akan diproses melalui class DAO menggunakan JDBC untuk mengakses database MySQL. Data yang telah tersimpan dapat ditampilkan kembali melalui menu yang tersedia. Setelah suatu proses selesai dilakukan, sistem akan kembali menampilkan menu utama sehingga pengguna dapat memilih fitur lainnya. Program akan terus berjalan sampai pengguna memilih menu Keluar. Setelah menu tersebut dipilih, sistem akan menampilkan pesan penutup dan program akan berhenti dijalankan.
 
 
-## 1.5 Penjelasan Struktur Package
+## 1.4 Penjelasan Struktur Package
 
 Program menggunakan beberapa package untuk mengelompokkan class berdasarkan fungsinya agar struktur program lebih rapi dan mudah dikelola.
 
@@ -377,10 +366,9 @@ Abstract method diterapkan pada method getInfo() di class Hewan. Method ini dibu
 <img width="397" height="51" alt="image" src="https://github.com/user-attachments/assets/0b56bd09-71f0-4a96-91ac-d861dee758c1" />
 
 
-## 3.5 Interface (Nilai Tambah)
+## 3.5 Interface
 
-
-Nilai tambah yang diterapkan pada program ini adalah penggunaan interface InfoHewan. Interface tersebut digunakan untuk mendefinisikan method getInfo() yang nantinya digunakan pada class Hewan. Penerapannya dapat dilihat pada interface InfoHewan yang berada di package interfaces serta pada class Hewan yang menggunakan implements InfoHewan. Dengan adanya interface, struktur program menjadi lebih teratur dan mudah untuk dikembangkan.
+Program ini menggunakan interface InfoHewan sebagai bagian dari penerapan konsep OOP. Interface tersebut mendefinisikan method getInfo() yang diimplementasikan oleh class Hewan. Penerapannya dapat dilihat pada interface InfoHewan yang berada di package interfaces serta pada class Hewan yang menggunakan keyword implements InfoHewan. Dengan adanya interface, program memiliki aturan method yang harus diterapkan oleh class yang mengimplementasikannya sehingga struktur program menjadi lebih teratur dan mudah dikembangkan.
 
 
 <img width="302" height="127" alt="image" src="https://github.com/user-attachments/assets/26ea028b-c873-4aac-8e12-a094bbac1ca5" />
@@ -388,4 +376,102 @@ Nilai tambah yang diterapkan pada program ini adalah penggunaan interface InfoHe
 
 <img width="517" height="132" alt="image" src="https://github.com/user-attachments/assets/dd4a1979-99f2-4bfd-a7bc-1b725cf4eac3" />
 
+## 3.6 Penerapan JDBC
 
+JDBC (Java Database Connectivity) diterapkan pada program Sistem Manajemen Penitipan Hewan Peliharaan untuk menghubungkan program Java dengan database MySQL. Database yang digunakan bernama db_penitipan_hewan, yang menyimpan data hewan dan data penitipan.
+
+Pembuatan koneksi database
+
+JDBC (Java Database Connectivity) diterapkan untuk menghubungkan program Java dengan database MySQL. Koneksi tersebut dibuat melalui class Koneksi yang berada di package config.
+
+<img width="711" height="386" alt="image" src="https://github.com/user-attachments/assets/610a5bb8-82e6-4dac-9d7d-1b830c5cba01" />
+
+Gambar di atas menunjukkan penerapan JDBC pada class Koneksi yang digunakan untuk menghubungkan program Java dengan database MySQL bernama db_penitipan_hewan. URL database, username, dan password digunakan sebagai informasi koneksi. Method getConnection() memanfaatkan DriverManager.getConnection() untuk membuat koneksi ke database.
+
+
+### 3.6.1 Pengambilan data hewan dari database
+
+Setelah koneksi ke database berhasil dibuat, program menggunakan method getSemuaHewan() pada class HewanDAO untuk mengambil seluruh data hewan yang tersimpan dalam tabel hewan. Proses ini dilakukan menggunakan perintah SQL SELECT * FROM hewan yang dijalankan melalui PreparedStatement, kemudian hasil query dibaca menggunakan ResultSet.
+
+Data yang diperoleh meliputi ID hewan, nama hewan, jenis hewan, dan ras. Selanjutnya, program menggunakan percabangan switch untuk membuat objek sesuai dengan jenis hewan, yaitu Kucing, Anjing, Kelinci, atau Hamster. Setiap objek yang berhasil dibuat kemudian dimasukkan ke dalam daftarHewan dan dikembalikan agar dapat diproses serta ditampilkan melalui program.
+
+Dengan penerapan JDBC ini, program dapat mengambil data langsung dari database MySQL sehingga data hewan yang ditampilkan sesuai dengan data yang tersimpan di dalam database.
+
+<img width="652" height="897" alt="image" src="https://github.com/user-attachments/assets/007eae4f-bc5b-454b-a3cf-8a0c369761ed" />
+
+
+Penambahan dan Perubahan Data Hewan
+
+Pada proses penambahan data hewan, program menggunakan method tambahHewan() pada class HewanDAO untuk menyimpan data hewan baru ke dalam tabel hewan di database MySQL. Proses ini menggunakan perintah SQL INSERT INTO untuk memasukkan ID hewan, nama hewan, jenis hewan, dan ras. Selanjutnya, PreparedStatement digunakan untuk mengatur nilai setiap parameter, sedangkan executeUpdate() digunakan untuk menjalankan perintah penambahan data. Method ini mengembalikan nilai true jika data berhasil ditambahkan dan false jika terjadi kegagalan.
+
+<img width="707" height="522" alt="image" src="https://github.com/user-attachments/assets/063b121a-fa1e-45bc-a431-6c011a1dda2f" />
+
+Sementara itu, proses perubahan data hewan dilakukan melalui method updateNamaHewan(). Method ini menggunakan perintah SQL UPDATE untuk mengubah nama hewan berdasarkan ID hewan yang dipilih. Nama baru dan ID hewan dimasukkan ke dalam parameter PreparedStatement, kemudian perintah dijalankan menggunakan executeUpdate(). Dengan demikian, perubahan hanya dilakukan pada nama hewan yang memiliki ID sesuai dengan data yang dimasukkan.
+
+<img width="716" height="427" alt="image" src="https://github.com/user-attachments/assets/6bac2463-06d6-403f-ab50-ba9343911cc5" />
+
+Melalui kedua method tersebut, program dapat menambahkan data hewan baru dan memperbarui nama hewan yang sudah tersimpan di database menggunakan JDBC.
+
+Penghapusan Data Hewan
+
+Proses penghapusan data hewan dilakukan melalui method hapusHewan() pada class HewanDAO. Method ini menggunakan perintah SQL DELETE FROM untuk menghapus data hewan dari tabel hewan berdasarkan ID hewan yang dimasukkan. Program menggunakan PreparedStatement untuk mengatur parameter ID, kemudian menjalankan perintah penghapusan menggunakan executeUpdate(). Method ini mengembalikan nilai true apabila data berhasil dihapus dan false apabila penghapusan gagal. Dengan menggunakan JDBC, program dapat menghapus data hewan yang sudah tersimpan di database MySQL. Pengguna cukup memilih menu hapus hewan dan memasukkan ID hewan yang ingin dihapus. Selanjutnya, program akan mencari data berdasarkan ID tersebut dan menghapusnya dari database.
+
+
+<img width="656" height="396" alt="image" src="https://github.com/user-attachments/assets/a3da310e-36ea-499a-9dc2-02c7e6a78bed" />
+
+### 3.6.2 Pengambilan data penitipan dari database
+
+Selain data hewan program juga dapat mengambil data penitipan yang tersimpan di database MySQL. Proses ini dilakukan melalui class PenitipanDAO pada package model.dao yang menggunakan JDBC untuk mengambil data dari tabel penitipan agar dapat ditampilkan melalui program.
+
+<img width="677" height="652" alt="image" src="https://github.com/user-attachments/assets/617a2c2c-312b-4795-8f48-7f19cc752e36" />
+
+Pada method getSemuaPenitipan(), program mengambil seluruh data penitipan yang tersimpan di tabel penitipan pada database MySQL. Proses ini menggunakan JDBC untuk menghubungkan program dengan database dan menjalankan perintah SQL untuk mengambil data. Selanjutnya, hasil query dibaca satu per satu dan dimasukkan ke dalam daftar penitipan. Data tersebut kemudian dikembalikan agar dapat ditampilkan melalui program.
+
+
+Penambahan dan Perubahan Data Penitipan
+
+Proses penambahan data penitipan dilakukan melalui method tambahPenitipan() pada class PenitipanDAO. Method ini digunakan untuk menyimpan data penitipan baru ke dalam tabel penitipan di database MySQL. Data yang dimasukkan meliputi ID penitipan, ID hewan, tanggal masuk, dan lama penitipan. Program menggunakan perintah SQL INSERT INTO untuk menambahkan data, kemudian PreparedStatement digunakan untuk mengatur nilai yang akan dimasukkan ke database. Setelah itu, executeUpdate() dijalankan untuk memproses penambahan data.
+
+<img width="745" height="520" alt="image" src="https://github.com/user-attachments/assets/b39700ee-8261-465c-9b21-1c9c051c0c0d" />
+
+
+Perubahan data penitipan dilakukan melalui method updatePenitipan() pada class PenitipanDAO. Method ini digunakan untuk mengubah tanggal masuk dan lama penitipan berdasarkan ID penitipan yang dipilih. Program menggunakan perintah SQL UPDATE untuk memperbarui data di database MySQL. Selanjutnya, PreparedStatement digunakan untuk mengatur nilai tanggal masuk, lama penitipan, dan ID penitipan, kemudian executeUpdate() dijalankan untuk memproses perubahan data.
+
+<img width="657" height="542" alt="image" src="https://github.com/user-attachments/assets/4b2e3a65-2022-440f-9774-d00d6ff7e286" />
+
+Penghapusan Data Penitipan
+
+Proses penghapusan data penitipan dilakukan melalui method hapusPenitipan() pada class PenitipanDAO. Method ini digunakan untuk menghapus data penitipan dari tabel penitipan di database MySQL berdasarkan ID penitipan yang dimasukkan oleh pengguna. Program menggunakan perintah SQL DELETE untuk menghapus data tersebut. Selanjutnya, PreparedStatement digunakan untuk menentukan ID penitipan yang akan dihapus, kemudian executeUpdate() dijalankan untuk memproses penghapusan data.
+
+<img width="682" height="405" alt="image" src="https://github.com/user-attachments/assets/724858da-0b0f-4596-a283-b1ad3a4b55be" />
+
+Pencarian Data Hewan
+
+<img width="710" height="370" alt="image" src="https://github.com/user-attachments/assets/32233cae-eff2-4b41-b577-49c3e06b5b57" />
+
+
+<img width="665" height="776" alt="image" src="https://github.com/user-attachments/assets/969ee6fd-eb80-4bf7-8c33-62db1cb93daf" />
+
+
+Fitur pencarian data hewan digunakan untuk membantu pengguna menemukan data hewan berdasarkan ID yang dimasukkan. Proses pencarian dilakukan melalui method cariHewan() pada class HewanController. Pertama, program mengambil data hewan dari database menggunakan method getSemuaHewan() pada class HewanDAO. Selanjutnya, pengguna diminta memasukkan ID hewan yang ingin dicari. Program akan memeriksa ID tersebut dengan membandingkannya dengan ID setiap hewan yang ada dalam daftar.
+
+Jika ID yang dimasukkan sesuai, program akan menampilkan informasi hewan berupa ID, nama, jenis, dan ras. Program menggunakan instanceof untuk menentukan jenis hewan yang ditemukan. Namun, jika ID tidak sesuai dengan data yang tersedia, program akan menampilkan pesan bahwa hewan tidak ditemukan. Dengan adanya fitur ini, pengguna dapat mencari data hewan dengan lebih mudah tanpa harus melihat seluruh daftar hewan.
+
+Pembuatan Database dan Tabel 
+
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ccc4244c-e07f-4bbb-baed-ab994c6172a5" />
+
+
+Database db_penitipan_hewan dibuat untuk menyimpan data yang digunakan dalam program Sistem Manajemen Penitipan Hewan Peliharaan. Pembuatan database dilakukan menggunakan perintah SQL CREATE DATABASE, sedangkan perintah USE digunakan untuk memilih database yang akan digunakan. Setelah itu, dibuat dua tabel, yaitu tabel hewan dan tabel penitipan. Tabel hewan digunakan untuk menyimpan ID, nama, jenis, dan ras hewan. Sementara itu, tabel penitipan digunakan untuk menyimpan ID penitipan, ID hewan, tanggal masuk, dan lama penitipan. Kolom id_hewan pada tabel penitipan berfungsi sebagai foreign key yang menghubungkan data penitipan dengan data hewan.
+
+<img width="417" height="462" alt="image" src="https://github.com/user-attachments/assets/5d0e06c1-f0db-4e67-bd52-0efcd9abb1b1" />
+
+
+Pengisian Dummy Data
+
+
+Setelah database dan tabel dibuat, langkah selanjutnya adalah mengisi dummy data atau data awal ke dalam tabel hewan dan penitipan. Pengisian data dilakukan melalui perintah SQL INSERT INTO yang terdapat pada file db_penitipan_hewan.sql. Data awal yang dimasukkan meliputi beberapa hewan, seperti Milo, Bruno, Mochi, dan Coco, beserta data penitipannya. Dummy data ini bertujuan agar pengguna dapat langsung melihat data yang tersedia ketika menjalankan fitur menampilkan data pada program, tanpa harus menambahkan data secara manual terlebih dahulu melalui menu program.
+
+
+<img width="617" height="396" alt="image" src="https://github.com/user-attachments/assets/c5895fe0-5843-4e88-a5ed-da552cf0b7e3" />
