@@ -121,16 +121,21 @@ Program juga menerapkan validasi input pada menu utama sehingga pengguna hanya d
 
 ### 2.2.1 Tampilkan Data Hewan
 
-<img width="280" height="131" alt="image" src="https://github.com/user-attachments/assets/cba7247b-7135-4c1b-8032-eac071653411" />
+<img width="307" height="497" alt="image" src="https://github.com/user-attachments/assets/ef4f0e02-2227-43cb-892b-3be16e90bb65" />
+
+dummy data hewan
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a20ccd1e-363d-41f1-b398-29443a3bd57c" />
 
 
-<img width="542" height="160" alt="image" src="https://github.com/user-attachments/assets/db4e200b-5820-4fee-9b95-2274e1276612" />
+dummy data penitipan
 
-Gambar di atas menampilkan data hewan yang tersimpan di dalam sistem. Data yang ditampilkan merupakan dummy data yang telah ditambahkan sebelumnya ke dalam ArrayList sebagai data awal program. Penerapan dummy data ini dilakukan untuk memenuhi ketentuan program, yaitu agar fitur read dapat langsung menampilkan data tanpa pengguna harus melakukan input data terlebih dahulu. Informasi yang ditampilkan meliputi ID hewan, nama hewan, dan jenis hewan. Selain menampilkan dummy data, menu ini juga dapat menampilkan data baru yang berhasil ditambahkan oleh pengguna melalui menu tambah data hewan.
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/435daaef-0d8b-4547-9b5f-0c98be2452e5" />
 
-<img width="336" height="615" alt="image" src="https://github.com/user-attachments/assets/b947b180-d0dc-4687-9a28-bc79a184eeb8" />
 
-Gambar di atas menampilkan data yang sudah ditambahkan dan tersimpan di dalam sistem. Pada menu tampilkan data hewan, informasi yang ditampilkan berupa ID hewan, nama hewan, jenis hewan dan ras hewan.
+
+Gambar di atas menampilkan data hewan yang tersimpan di dalam database MySQL. Data yang ditampilkan merupakan dummy data yang telah ditambahkan sebelumnya ke dalam database melalui file db_penitipan_hewan.sql. Dengan adanya dummy data tersebut, fitur tampilkan data hewan dapat langsung menampilkan data tanpa pengguna harus memasukkan data terlebih dahulu. Informasi yang ditampilkan meliputi ID hewan, nama hewan, jenis hewan, dan ras. Selain menampilkan dummy data, menu ini juga dapat menampilkan data hewan baru yang berhasil ditambahkan oleh pengguna melalui menu tambah data hewan. Proses pengambilan data dilakukan menggunakan JDBC melalui class HewanDAO dengan menjalankan perintah SQL untuk mengambil data dari database.
+
 
 ### 2.2.2 Tambah Data Hewan
 
