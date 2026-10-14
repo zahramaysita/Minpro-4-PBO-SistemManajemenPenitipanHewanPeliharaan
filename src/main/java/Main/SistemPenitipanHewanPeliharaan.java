@@ -1,7 +1,7 @@
+
 package main;
 
 import controller.HewanController;
-import model.Service;
 import view.HewanView;
 
 import java.util.Scanner;
@@ -12,12 +12,10 @@ public class SistemPenitipanHewanPeliharaan {
 
         Scanner scanner = new Scanner(System.in);
 
-        Service service = new Service();
-
         HewanView view = new HewanView();
 
         HewanController controller =
-                new HewanController(service, view, scanner);
+                new HewanController(view, scanner);
 
         controller.jalankanProgram();
 

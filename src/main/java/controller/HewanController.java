@@ -11,19 +11,23 @@ import model.Kucing;
 import model.Penitipan;
 import model.Service;
 import view.HewanView;
+import model.dao.HewanDAO;
+import model.dao.PenitipanDAO;
+import java.util.List;
+
 
 public class HewanController {
 
-    private Service service;
     private HewanView view;
     private Scanner scanner;
+    private HewanDAO hewanDAO = new HewanDAO();
+    private PenitipanDAO penitipanDAO = new PenitipanDAO();
 
+    
     public HewanController(
-            Service service,
             HewanView view,
             Scanner scanner) {
 
-        this.service = service;
         this.view = view;
         this.scanner = scanner;
     }
@@ -68,15 +72,16 @@ public class HewanController {
     // =========================
     // TAMBAH HEWAN
     // =========================
+    
     public void tambahHewan() {
 
-        ArrayList<Hewan> daftarHewan =
-                service.getDaftarHewan();
+        // Mengambil data hewan yang sudah tersimpan di database
+        List<Hewan> daftarHewan = hewanDAO.getSemuaHewan();
 
         view.tampilkanInput("ID Hewan: ");
 
         if (!scanner.hasNextInt()) {
-            view.tampilkanPesan (">> ID hewan harus berupa angka!");
+            view.tampilkanPesan(">> ID hewan harus berupa angka!");
             scanner.nextLine();
             return;
         }
@@ -85,10 +90,11 @@ public class HewanController {
         scanner.nextLine();
 
         if (id <= 0) {
-            view.tampilkanPesan (">> ID hewan tidak valid!");
+            view.tampilkanPesan(">> ID hewan tidak valid!");
             return;
         }
 
+        // Memeriksa ID agar tidak duplikat
         for (Hewan h : daftarHewan) {
             if (h.getIdHewan() == id) {
                 view.tampilkanPesan(">> ID hewan sudah digunakan!");
@@ -97,7 +103,7 @@ public class HewanController {
         }
 
         view.tampilkanInput("Nama Hewan: ");
-        String nama = scanner.nextLine();
+        String nama = scanner.nextLine().trim();
 
         if (nama.isEmpty()) {
             view.tampilkanPesan(">> Nama hewan tidak boleh kosong!");
@@ -113,7 +119,6 @@ public class HewanController {
         view.tampilkanInput("Pilihan: ");
 
         if (!scanner.hasNextInt()) {
-
             view.tampilkanPesan(">> Pilihan harus berupa angka!");
             scanner.nextLine();
             return;
@@ -121,61 +126,62 @@ public class HewanController {
 
         int pilihan = scanner.nextInt();
         scanner.nextLine();
+
         Hewan hewanBaru;
+        String jenis;
+        String ras;
+
         switch (pilihan) {
             case 1 -> {
+                jenis = "Kucing";
                 view.tampilkanInput("Ras Kucing: ");
-                String ras = scanner.nextLine();
+                ras = scanner.nextLine().trim();
 
                 if (ras.isEmpty()) {
                     view.tampilkanPesan(">> Ras kucing tidak boleh kosong!");
                     return;
                 }
 
-                hewanBaru =
-                        new Kucing(id, nama, ras);
+                hewanBaru = new Kucing(id, nama, ras);
             }
 
             case 2 -> {
-
+                jenis = "Anjing";
                 view.tampilkanInput("Ras Anjing: ");
-                String ras = scanner.nextLine();
+                ras = scanner.nextLine().trim();
 
                 if (ras.isEmpty()) {
                     view.tampilkanPesan(">> Ras anjing tidak boleh kosong!");
                     return;
                 }
 
-                hewanBaru =
-                        new Anjing(id, nama, ras);
+                hewanBaru = new Anjing(id, nama, ras);
             }
 
             case 3 -> {
-
+                jenis = "Kelinci";
                 view.tampilkanInput("Ras Kelinci: ");
-                String ras = scanner.nextLine();
+                ras = scanner.nextLine().trim();
 
                 if (ras.isEmpty()) {
                     view.tampilkanPesan(">> Ras kelinci tidak boleh kosong!");
                     return;
                 }
 
-                hewanBaru =
-                        new Kelinci(id, nama, ras);
+                hewanBaru = new Kelinci(id, nama, ras);
             }
 
             case 4 -> {
-
+                jenis = "Hamster";
                 view.tampilkanInput("Ras Hamster: ");
-                String ras = scanner.nextLine();
+                ras = scanner.nextLine().trim();
 
                 if (ras.isEmpty()) {
                     view.tampilkanPesan(">> Ras hamster tidak boleh kosong!");
                     return;
                 }
 
-                hewanBaru =
-                        new Hamster(id, nama, ras);
+                hewanBaru = new Hamster(id, nama, ras);
             }
 
             default -> {
@@ -184,21 +190,28 @@ public class HewanController {
             }
         }
 
-        daftarHewan.add(hewanBaru);
+        // Menyimpan data melalui DAO ke database MySQL
+        boolean berhasil = hewanDAO.tambahHewan(
+                hewanBaru, jenis, ras
+        );
 
-        view.tampilkanPesan(">> Hewan berhasil ditambahkan!");
+        if (berhasil) {
+            view.tampilkanPesan(">> Hewan berhasil ditambahkan ke database!");
+        } else {
+            view.tampilkanPesan(">> Hewan gagal ditambahkan ke database!");
+        }
     }
+
 
     // =========================
     // TAMPILKAN HEWAN
     // =========================
+    
     public void tampilkanHewan() {
 
-        ArrayList<Hewan> daftarHewan =
-                service.getDaftarHewan();
+        List<Hewan> daftarHewan = hewanDAO.getSemuaHewan();
 
         if (daftarHewan.isEmpty()) {
-
             view.tampilkanPesan(">> Belum ada data hewan.");
             return;
         }
@@ -206,40 +219,23 @@ public class HewanController {
         for (Hewan h : daftarHewan) {
 
             view.tampilkanPesan("ID Hewan: " + h.getIdHewan());
-
             view.tampilkanPesan("Nama Hewan: " + h.getNamaHewan());
-
             view.tampilkanPesan("Info Hewan: " + h.getInfo());
 
-            if (h instanceof Kucing) {
-
-                Kucing k = (Kucing) h;
-
+            if (h instanceof Kucing k) {
                 view.tampilkanPesan("Jenis Hewan: Kucing");
-
                 view.tampilkanPesan("Ras: " + k.getRas());
 
-            } else if (h instanceof Anjing) {
-
-                Anjing a = (Anjing) h;
-
+            } else if (h instanceof Anjing a) {
                 view.tampilkanPesan("Jenis Hewan: Anjing");
-
                 view.tampilkanPesan("Ras: " + a.getRas());
 
-            } else if (h instanceof Kelinci) {
-
-                Kelinci k = (Kelinci) h;
-
+            } else if (h instanceof Kelinci k) {
                 view.tampilkanPesan("Jenis Hewan: Kelinci");
-
                 view.tampilkanPesan("Ras: " + k.getRasKelinci());
 
-            } else if (h instanceof Hamster) {
-                Hamster hm = (Hamster) h;
-
+            } else if (h instanceof Hamster hm) {
                 view.tampilkanPesan("Jenis Hewan: Hamster");
-
                 view.tampilkanPesan("Ras: " + hm.getRasHamster());
             }
 
@@ -247,20 +243,20 @@ public class HewanController {
         }
     }
 
+
     // =========================
     // HAPUS HEWAN
     // =========================
+    
     public void hapusHewan() {
 
-        ArrayList<Hewan> daftarHewan =
-                service.getDaftarHewan();
+        // Mengambil data hewan dari database
+        List<Hewan> daftarHewan = hewanDAO.getSemuaHewan();
 
         view.tampilkanInput("Masukkan ID Hewan: ");
 
         if (!scanner.hasNextInt()) {
-
             view.tampilkanPesan(">> ID hewan harus berupa angka!");
-
             scanner.nextLine();
             return;
         }
@@ -268,35 +264,49 @@ public class HewanController {
         int idTarget = scanner.nextInt();
         scanner.nextLine();
 
-        for (int i = 0; i < daftarHewan.size(); i++) {
+        // Memeriksa apakah ID hewan tersedia
+        boolean ditemukan = false;
 
-            if (daftarHewan.get(i).getIdHewan()
-                    == idTarget) {
-
-                daftarHewan.remove(i);
-
-                view.tampilkanPesan(">> Hewan berhasil dihapus!");
-                return;
+        for (Hewan h : daftarHewan) {
+            if (h.getIdHewan() == idTarget) {
+                ditemukan = true;
+                break;
             }
         }
 
-        view.tampilkanPesan(">> Hewan tidak ditemukan!");
+        if (!ditemukan) {
+            view.tampilkanPesan(">> Hewan tidak ditemukan!");
+            return;
+        }
+
+        // Menghapus data hewan dari database
+        boolean berhasil = hewanDAO.hapusHewan(idTarget);
+
+        if (berhasil) {
+            view.tampilkanPesan(
+                ">> Hewan berhasil dihapus dari database!"
+            );
+        } else {
+            view.tampilkanPesan(
+                ">> Hewan gagal dihapus dari database!"
+            );
+        }
     }
+
 
     // =========================
     // UPDATE HEWAN
     // =========================
+    
     public void updateHewan() {
 
-        ArrayList<Hewan> daftarHewan =
-                service.getDaftarHewan();
+        // Mengambil data hewan dari database
+        List<Hewan> daftarHewan = hewanDAO.getSemuaHewan();
 
-        view.tampilkanInput ("Masukkan ID Hewan: ");
+        view.tampilkanInput("Masukkan ID Hewan: ");
 
         if (!scanner.hasNextInt()) {
-
             view.tampilkanPesan(">> ID hewan harus berupa angka!");
-
             scanner.nextLine();
             return;
         }
@@ -304,87 +314,95 @@ public class HewanController {
         int idTarget = scanner.nextInt();
         scanner.nextLine();
 
+        // Memeriksa apakah ID hewan ada di database
+        Hewan hewanDitemukan = null;
+
         for (Hewan h : daftarHewan) {
-
             if (h.getIdHewan() == idTarget) {
-
-                view.tampilkanInput("Nama Hewan Baru: ");
-
-                String namaBaru =
-                        scanner.nextLine();
-
-                if (namaBaru.isEmpty()) {
-
-                    view.tampilkanPesan(">> Nama hewan tidak boleh kosong!");
-                    return;
-                }
-
-                h.setNamaHewan(namaBaru);
-
-                view.tampilkanPesan(">> Data hewan berhasil diperbarui!");
-
-                return;
+                hewanDitemukan = h;
+                break;
             }
         }
 
-        view.tampilkanPesan(">> Hewan tidak ditemukan!");
+        if (hewanDitemukan == null) {
+            view.tampilkanPesan(">> Hewan tidak ditemukan!");
+            return;
+        }
+
+        view.tampilkanInput("Nama Hewan Baru: ");
+        String namaBaru = scanner.nextLine().trim();
+
+        if (namaBaru.isEmpty()) {
+            view.tampilkanPesan(">> Nama hewan tidak boleh kosong!");
+            return;
+        }
+
+        // Memperbarui nama hewan di database
+        boolean berhasil = hewanDAO.updateNamaHewan(
+            idTarget, namaBaru
+        );
+
+        if (berhasil) {
+            view.tampilkanPesan(
+                ">> Data hewan berhasil diperbarui!"
+            );
+        } else {
+            view.tampilkanPesan(
+                ">> Data hewan gagal diperbarui!"
+            );
+        }
     }
 
+    
     // =========================
     // TAMBAH PENITIPAN
     // =========================
+    
     public void tambahPenitipan() {
+        List<Hewan> daftarHewan = hewanDAO.getSemuaHewan();
+        List<Penitipan> daftarPenitipan = penitipanDAO.getSemuaPenitipan();
 
-        ArrayList<Hewan> daftarHewan =
-                service.getDaftarHewan();
+        if (daftarHewan.isEmpty()) {
+            view.tampilkanPesan(">> Belum ada data hewan di database!");
+            return;
+        }
 
-        ArrayList<Penitipan> daftarPenitipan =
-                service.getDaftarPenitipan();
-
-        view.tampilkanInput("ID Penitipan: ");
+        view.tampilkanInput("Masukkan ID Penitipan: ");
 
         if (!scanner.hasNextInt()) {
-
-            view.tampilkanPesan(">> ID penitipan harus berupa angka!");
-
+            view.tampilkanPesan(">> ID harus berupa angka!");
             scanner.nextLine();
             return;
         }
 
         int idPenitipan = scanner.nextInt();
+        scanner.nextLine();
 
         if (idPenitipan <= 0) {
-
-            view.tampilkanPesan(">> ID penitipan tidak valid!");
-
-            scanner.nextLine();
+            view.tampilkanPesan(">> ID harus lebih dari 0!");
             return;
         }
 
         for (Penitipan p : daftarPenitipan) {
-            if (p.getIdPenitipan()
-                    == idPenitipan) {
-                view.tampilkanPesan(">> ID penitipan sudah digunakan!");
-                scanner.nextLine();
+            if (p.getIdPenitipan() == idPenitipan) {
+                view.tampilkanPesan(">> ID Penitipan sudah digunakan!");
                 return;
             }
         }
 
-        view.tampilkanInput("ID Hewan: ");
+        view.tampilkanInput("Masukkan ID Hewan: ");
+
         if (!scanner.hasNextInt()) {
-            view.tampilkanPesan(">> ID hewan harus berupa angka!");
+            view.tampilkanPesan(">> ID Hewan harus berupa angka!");
             scanner.nextLine();
             return;
         }
 
         int idHewan = scanner.nextInt();
         scanner.nextLine();
-        if (idHewan <= 0) {
-            view.tampilkanPesan(">> ID hewan tidak valid!");
-            return;
-        }
 
         boolean hewanDitemukan = false;
+
         for (Hewan h : daftarHewan) {
             if (h.getIdHewan() == idHewan) {
                 hewanDitemukan = true;
@@ -393,104 +411,135 @@ public class HewanController {
         }
 
         if (!hewanDitemukan) {
-            view.tampilkanPesan(">> ID hewan belum terdaftar!");
+            view.tampilkanPesan(">> ID Hewan tidak ditemukan!");
             return;
         }
 
-        view.tampilkanInput("Tanggal Masuk: ");
+        view.tampilkanInput("Tanggal Masuk (yyyy-MM-dd): ");
+        String tanggalMasuk = scanner.nextLine().trim();
 
-        String tanggalMasuk =
-                scanner.nextLine();
-
-        if (tanggalMasuk.isEmpty()) {
-            view.tampilkanPesan(">> Tanggal masuk tidak boleh kosong!");
+        try {
+            java.time.LocalDate.parse(tanggalMasuk);
+        } catch (java.time.format.DateTimeParseException e) {
+            view.tampilkanPesan(
+                ">> Format tanggal salah! Gunakan yyyy-MM-dd."
+            );
             return;
         }
 
         view.tampilkanInput("Lama Penitipan (hari): ");
+
         if (!scanner.hasNextInt()) {
             view.tampilkanPesan(">> Lama penitipan harus berupa angka!");
-
             scanner.nextLine();
             return;
         }
 
-        int lamaPenitipan =
-                scanner.nextInt();
-
-        if (lamaPenitipan <= 0) {
-
-            view.tampilkanPesan(">> Lama penitipan harus lebih dari 0 hari!");
-            scanner.nextLine();
-            return;
-        }
-
+        int lamaPenitipan = scanner.nextInt();
         scanner.nextLine();
 
-        Penitipan penitipanBaru =
-                new Penitipan(
-                        idPenitipan,
-                        idHewan,
-                        tanggalMasuk,
-                        lamaPenitipan
-                );
+        if (lamaPenitipan <= 0) {
+            view.tampilkanPesan(">> Lama penitipan harus lebih dari 0!");
+            return;
+        }
 
-        daftarPenitipan.add(penitipanBaru);
+        Penitipan penitipanBaru = new Penitipan(
+            idPenitipan,
+            idHewan,
+            tanggalMasuk,
+            lamaPenitipan
+        );
 
-        view.tampilkanPesan(">> Data penitipan berhasil ditambahkan!");
+        boolean berhasil = penitipanDAO.tambahPenitipan(penitipanBaru);
+
+        if (berhasil) {
+            view.tampilkanPesan(
+                ">> Data penitipan berhasil ditambahkan ke database!"
+            );
+        } else {
+            view.tampilkanPesan(
+                ">> Data penitipan gagal ditambahkan!"
+            );
+        }
     }
 
     // =========================
     // TAMPILKAN PENITIPAN
     // =========================
+    
     public void tampilkanPenitipan() {
+        List<Penitipan> daftarPenitipan =
+                penitipanDAO.getSemuaPenitipan();
 
-        ArrayList<Penitipan> daftarPenitipan =
-                service.getDaftarPenitipan();
+        List<Hewan> daftarHewan =
+                hewanDAO.getSemuaHewan();
 
-        ArrayList<Hewan> daftarHewan =
-            service.getDaftarHewan();
-        
         if (daftarPenitipan.isEmpty()) {
             view.tampilkanPesan(">> Belum ada data penitipan.");
             return;
         }
 
+        view.tampilkanPesan("===== DAFTAR PENITIPAN =====");
+
         for (Penitipan p : daftarPenitipan) {
+            view.tampilkanPesan(
+                "ID Penitipan: " + p.getIdPenitipan()
+            );
 
-            view.tampilkanPesan("ID Penitipan: " + p.getIdPenitipan());
-            view.tampilkanPesan("ID Hewan: " + p.getIdHewan());
-            view.tampilkanPesan("Tanggal Masuk: " + p.getTanggalMasuk());
-            view.tampilkanPesan("Lama Penitipan: " + p.getLamaPenitipan() + " hari");
+            view.tampilkanPesan(
+                "ID Hewan: " + p.getIdHewan()
+            );
 
-            
-             // PEMANGGILAN OVERLOADING
+            boolean hewanDitemukan = false;
+
             for (Hewan h : daftarHewan) {
                 if (h.getIdHewan() == p.getIdHewan()) {
-                    h.infoPenitipan();
-                    h.infoPenitipan(p.getLamaPenitipan());
+                    view.tampilkanPesan(
+                        "Nama Hewan: " + h.getNamaHewan()
+                    );
+
+                    hewanDitemukan = true;
                     break;
                 }
             }
 
-            view.tampilkanPesan("-----------------------------------------------");
+            if (!hewanDitemukan) {
+                view.tampilkanPesan(
+                    "Nama Hewan: Tidak ditemukan"
+                );
+            }
+
+            view.tampilkanPesan(
+                "Tanggal Masuk: " + p.getTanggalMasuk()
+            );
+
+            view.tampilkanPesan(
+                "Lama Penitipan: "
+                + p.getLamaPenitipan() + " hari"
+            );
+
+            view.tampilkanPesan("----------------------------");
         }
     }
+
 
     // =========================
     // HAPUS PENITIPAN
     // =========================
+    
     public void hapusPenitipan() {
+        List<Penitipan> daftarPenitipan =
+                penitipanDAO.getSemuaPenitipan();
 
-        ArrayList<Penitipan> daftarPenitipan =
-                service.getDaftarPenitipan();
+        if (daftarPenitipan.isEmpty()) {
+            view.tampilkanPesan(">> Belum ada data penitipan.");
+            return;
+        }
 
         view.tampilkanInput("Masukkan ID Penitipan: ");
 
         if (!scanner.hasNextInt()) {
-
-            view.tampilkanPesan(">> ID penitipan harus berupa angka!");
-
+            view.tampilkanPesan(">> ID harus berupa angka!");
             scanner.nextLine();
             return;
         }
@@ -498,35 +547,50 @@ public class HewanController {
         int idTarget = scanner.nextInt();
         scanner.nextLine();
 
-        for (int i = 0;
-                i < daftarPenitipan.size();
-                i++) {
+        boolean ditemukan = false;
 
-            if (daftarPenitipan.get(i)
-                    .getIdPenitipan() 
-                    == idTarget) {
-
-                daftarPenitipan.remove(i);
-                view.tampilkanPesan(">> Data penitipan berhasil dihapus!");
-                return;
+        for (Penitipan p : daftarPenitipan) {
+            if (p.getIdPenitipan() == idTarget) {
+                ditemukan = true;
+                break;
             }
         }
 
-        view.tampilkanPesan(">> Data penitipan tidak ditemukan!");
+        if (!ditemukan) {
+            view.tampilkanPesan(">> Data penitipan tidak ditemukan!");
+            return;
+        }
+
+        boolean berhasil = penitipanDAO.hapusPenitipan(idTarget);
+
+        if (berhasil) {
+            view.tampilkanPesan(
+                ">> Data penitipan berhasil dihapus dari database!"
+            );
+        } else {
+            view.tampilkanPesan(
+                ">> Data penitipan gagal dihapus!"
+            );
+        }
     }
 
     // =========================
     // UPDATE PENITIPAN
     // =========================
+    
     public void updatePenitipan() {
+        List<Penitipan> daftarPenitipan =
+                penitipanDAO.getSemuaPenitipan();
 
-        ArrayList<Penitipan> daftarPenitipan =
-                service.getDaftarPenitipan();
+        if (daftarPenitipan.isEmpty()) {
+            view.tampilkanPesan(">> Belum ada data penitipan.");
+            return;
+        }
 
         view.tampilkanInput("Masukkan ID Penitipan: ");
 
         if (!scanner.hasNextInt()) {
-            view.tampilkanPesan(">> ID penitipan harus berupa angka!");
+            view.tampilkanPesan(">> ID harus berupa angka!");
             scanner.nextLine();
             return;
         }
@@ -534,39 +598,65 @@ public class HewanController {
         int idTarget = scanner.nextInt();
         scanner.nextLine();
 
+        boolean ditemukan = false;
+
         for (Penitipan p : daftarPenitipan) {
-
-            if (p.getIdPenitipan()
-                    == idTarget) {
-
-                view.tampilkanInput("Tanggal Masuk Baru: ");
-
-                String tanggalBaru =
-                        scanner.nextLine();
-
-                view.tampilkanInput("Lama Penitipan Baru: ");
-
-                if (!scanner.hasNextInt()) {
-                    view.tampilkanPesan(">> Lama penitipan harus berupa angka!");
-                    scanner.nextLine();
-                    return;
-                }
-
-                int lamaBaru =
-                        scanner.nextInt();
-
-                scanner.nextLine();
-
-                p.setTanggalMasuk(tanggalBaru);
-                p.setLamaPenitipan(lamaBaru);
-
-                view.tampilkanPesan(">> Data penitipan berhasil diperbarui!");
-
-                return;
+            if (p.getIdPenitipan() == idTarget) {
+                ditemukan = true;
+                break;
             }
         }
 
-        view.tampilkanPesan(">> Data penitipan tidak ditemukan!");
+        if (!ditemukan) {
+            view.tampilkanPesan(">> Data penitipan tidak ditemukan!");
+            return;
+        }
+
+        view.tampilkanInput("Tanggal Masuk Baru (yyyy-MM-dd): ");
+        String tanggalBaru = scanner.nextLine().trim();
+
+        try {
+            java.time.LocalDate.parse(tanggalBaru);
+        } catch (java.time.format.DateTimeParseException e) {
+            view.tampilkanPesan(
+                ">> Format tanggal salah! Gunakan yyyy-MM-dd."
+            );
+            return;
+        }
+
+        view.tampilkanInput("Lama Penitipan Baru (hari): ");
+
+        if (!scanner.hasNextInt()) {
+            view.tampilkanPesan(
+                ">> Lama penitipan harus berupa angka!"
+            );
+            scanner.nextLine();
+            return;
+        }
+
+        int lamaBaru = scanner.nextInt();
+        scanner.nextLine();
+
+        if (lamaBaru <= 0) {
+            view.tampilkanPesan(
+                ">> Lama penitipan harus lebih dari 0!"
+            );
+            return;
+        }
+
+        boolean berhasil = penitipanDAO.updatePenitipan(
+            idTarget, tanggalBaru, lamaBaru
+        );
+
+        if (berhasil) {
+            view.tampilkanPesan(
+                ">> Data penitipan berhasil diperbarui!"
+            );
+        } else {
+            view.tampilkanPesan(
+                ">> Data penitipan gagal diperbarui!"
+            );
+        }
     }
 
     // =========================
@@ -574,8 +664,12 @@ public class HewanController {
     // =========================
     public void cariHewan() {
 
-        ArrayList<Hewan> daftarHewan =
-                service.getDaftarHewan();
+        List<Hewan> daftarHewan = hewanDAO.getSemuaHewan();
+
+        if (daftarHewan.isEmpty()) {
+            view.tampilkanPesan(">> Belum ada data hewan di database.");
+            return;
+        }
 
         view.tampilkanInput("Masukkan ID Hewan yang dicari: ");
 
@@ -596,31 +690,19 @@ public class HewanController {
                 view.tampilkanPesan("ID Hewan: " + h.getIdHewan());
                 view.tampilkanPesan("Nama Hewan: " + h.getNamaHewan());
 
-                if (h instanceof Kucing) {
-                    Kucing k = (Kucing) h;
-
+                if (h instanceof Kucing k) {
                     view.tampilkanPesan("Jenis Hewan: Kucing");
                     view.tampilkanPesan("Ras: " + k.getRas());
 
-                } else if (h instanceof Anjing) {
-
-                    Anjing a = (Anjing) h;
-
+                } else if (h instanceof Anjing a) {
                     view.tampilkanPesan("Jenis Hewan: Anjing");
-
                     view.tampilkanPesan("Ras: " + a.getRas());
 
-                } else if (h instanceof Kelinci) {
-
-                    Kelinci k = (Kelinci) h;
-
+                } else if (h instanceof Kelinci k) {
                     view.tampilkanPesan("Jenis Hewan: Kelinci");
                     view.tampilkanPesan("Ras: " + k.getRasKelinci());
 
-                } else if (h instanceof Hamster) {
-
-                    Hamster hm = (Hamster) h;
-
+                } else if (h instanceof Hamster hm) {
                     view.tampilkanPesan("Jenis Hewan: Hamster");
                     view.tampilkanPesan("Ras: " + hm.getRasHamster());
                 }

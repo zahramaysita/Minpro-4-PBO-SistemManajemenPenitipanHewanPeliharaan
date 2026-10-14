@@ -1,7 +1,11 @@
+E:\SistemPenitipanHewanPeliharaan\src\main\java\config\Koneksi.java
+E:\SistemPenitipanHewanPeliharaan\src\main\java\config\TesKoneksi.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\controller\HewanController.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\interfaces\InfoHewan.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\Main\SistemPenitipanHewanPeliharaan.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\model\Anjing.java
+E:\SistemPenitipanHewanPeliharaan\src\main\java\model\dao\HewanDAO.java
+E:\SistemPenitipanHewanPeliharaan\src\main\java\model\dao\PenitipanDAO.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\model\Hamster.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\model\Hewan.java
 E:\SistemPenitipanHewanPeliharaan\src\main\java\model\Kelinci.java
